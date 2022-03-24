@@ -26,11 +26,11 @@ public interface APICall {
     @GET("/guest")
     Call<JsonObject> getGuest(@Header("Authorization") String authorization);
 
-    @GET("/room")
-    Call<JsonObject> getRoom(@Header("Authorization") String authorization);
+    @GET("/reservation/{id}/room")
+    Call<JsonObject> getRoom(@Path("id") String id, @Header("Authorization") String authorization);
 
-    @GET("/bed")
-    Call<JsonObject> getBed(@Header("Authorization") String authorization);
+    @GET("/guest/{id}/bed")
+    Call<JsonObject> getGuestBed(@Path("id") String id,@Header("Authorization") String authorization);
 
 
     @GET("/guest/{id}/reservationList")
@@ -38,6 +38,9 @@ public interface APICall {
 
     @GET("/reservation/{id}/ota")
     Call<JsonObject> getReservationOta(@Path("id") String id, @Header("Authorization") String authorization);
+
+    @GET("/reservation/{id}/property")
+    Call<JsonObject> getReservationProperty(@Path("id") String id, @Header("Authorization") String authorization);
 
 
 

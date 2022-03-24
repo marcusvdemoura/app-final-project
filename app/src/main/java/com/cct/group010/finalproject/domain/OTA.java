@@ -3,7 +3,7 @@ package com.cct.group010.finalproject.domain;
 import java.util.List;
 
 public class OTA {
-    private Integer id;
+    private String id;
     private String name;
     private String website;
 
@@ -18,11 +18,11 @@ public class OTA {
     }
 
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

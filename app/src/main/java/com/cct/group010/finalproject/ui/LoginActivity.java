@@ -2,6 +2,7 @@ package com.cct.group010.finalproject.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -11,25 +12,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.cct.group010.finalproject.R;
-import com.cct.group010.finalproject.domain.Bed;
 import com.cct.group010.finalproject.domain.CustomGuestRequestToken;
 import com.cct.group010.finalproject.domain.Guest;
-import com.cct.group010.finalproject.domain.OTA;
-import com.cct.group010.finalproject.domain.Property;
 import com.cct.group010.finalproject.domain.Reservation;
 import com.cct.group010.finalproject.domain.Room;
 import com.cct.group010.finalproject.model.JwtToken;
-import com.cct.group010.finalproject.remote.APICall;
-import com.cct.group010.finalproject.remote.RetroClass;
 import com.cct.group010.finalproject.tokenmanager.TokenManager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,11 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private ImageView logo;
     private TokenManager tokenManager;
-    private static final Guest guest = new Guest();
-    private static final Property property = new Property();
-    private static final Bed bed = new Bed();
-    private static final List<Room> room = new ArrayList<>();
-    private static final APICall apiCall = RetroClass.getAPICall();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,74 +52,92 @@ public class LoginActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.insertPassword);
 
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        loginButton.setOnClickListener(view -> {
 
-                String username = email.getText().toString();
-                String pass = password.getText().toString();
-                CustomGuestRequestToken guestRequestToken = new CustomGuestRequestToken(username, pass);
+            String username = email.getText().toString();
+            String pass = password.getText().toString();
+            CustomGuestRequestToken guestRequestToken = new CustomGuestRequestToken(username, pass);
 
 
-                retrofit2.Call<JwtToken> jwtTokenCall = apiCall.userLogin(guestRequestToken);
 
-                jwtTokenCall.enqueue(new Callback<JwtToken>() {
-                    @Override
-                    public void onResponse(Call<JwtToken> call, Response<JwtToken> response) {
-                        if (response.body() != null) {
+            Call<JwtToken> jwtTokenCall = ImportantObjects.apiCall.userLogin(guestRequestToken);
 
-                            JwtToken jwtToken = response.body();
-                            tokenManager.createSession(username, jwtToken.getToken().toString());
+            jwtTokenCall.enqueue(new Callback<JwtToken>() {
+                @Override
+                public void onResponse(Call<JwtToken> call, Response<JwtToken> response) {
+                    if (response.body() != null) {
 
-                            Call<JsonObject> guestCall = apiCall.getGuest("Bearer " + jwtToken.getToken().toString());
+                        JwtToken jwtToken = response.body();
+                        tokenManager.createSession(username, jwtToken.getToken().toString());
 
-
-                            guestCall.enqueue(new Callback<JsonObject>() {
-                                @Override
-                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                                    getGuest(response, username);
-
-                                    // reservation list start code!!!
-
-                                    String p = guest.getId().toString();
-
-                                    String authorization = "Bearer " + jwtToken.getToken().toString();
-
-                                    getReservation(authorization);
+                        Call<JsonObject> guestCall = ImportantObjects.apiCall.getGuest("Bearer " + jwtToken.getToken().toString());
 
 
-                                    for (Reservation r : guest.getReservationList()) {
-                                        getReservationOta(authorization, r);
-                                    }
+                        guestCall.enqueue(new Callback<JsonObject>() {
+                            @Override
+                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                                getGuest(response, username);
+
+                                // reservation list start code!!!
+
+                                String p = ImportantObjects.guest.getId().toString();
+
+                                String authorization = "Bearer " + jwtToken.getToken().toString();
+
+                                getReservation(authorization);
+
+                                getBed(authorization, ImportantObjects.guest);
+                                ImportantObjects.guest.setBed(ImportantObjects.bed);
 
 
-//                                    intentMenuActivity();
-//                                    finish();
+                                System.out.println("I came here!!!!!!!!");
+
+
+                                for (Reservation res : ImportantObjects.guest.getReservationList()) {
+//                                    System.out.println("I came here!!!!!!!!" + res.getId());
+//                                    getReservationOta(authorization, res);
+
+
                                 }
 
-                                @Override
-                                public void onFailure(Call<JsonObject> call, Throwable t) {
-                                    System.out.println("THIS IS AN ERROR!!!!");
-                                    System.out.println(t.getMessage());
-                                }
-                            });
-                        }
+
+
+
+
+
+
+                                intentMenuActivity();
+                                finish();
+                            }
+
+                            @Override
+                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                                System.out.println("THIS IS AN ERROR!!!!");
+                                System.out.println(t.getMessage());
+                            }
+                        });
                     }
+                }
 
 
-                    @Override
-                    public void onFailure(Call<JwtToken> call, Throwable t) {
-                        System.out.println("THIS IS A FAILURE :");
-                        showToast(t.getMessage());
-                    }
-                });
+                @Override
+                public void onFailure(Call<JwtToken> call, Throwable t) {
+                    System.out.println("THIS IS A FAILURE :");
+                    showToast(t.getMessage());
+                }
+            });
 
-
-            }
 
         });
 
+
+    }
+
+    private void intentMenuActivity() {
+
+        Intent i = new Intent(getApplicationContext(), MainMenu.class);
+        startActivity(i);
 
     }
 
@@ -158,14 +166,16 @@ public class LoginActivity extends AppCompatActivity {
             String email = guestObject.get("email").toString().replace("\"", "");
             // logic to get the id, as for security reasons is not displayed on the json request
 
-            int id = getId("guest", 6, guestObject);
+            int id = Integer.parseInt(getId("guest", 6, guestObject));
+
 
 
             if (username.contentEquals(email)) {
 
-                guest.setEmail(email);
-                guest.setName(guestObject.get("name").toString().replace("\"", ""));
-                guest.setId((id));
+                ImportantObjects.guest.setEmail(email);
+                ImportantObjects.guest.setName(guestObject.get("name").toString().replace("\"", ""));
+                ImportantObjects.guest.setId((id));
+
 
                 String reservationsPath = guestObject.get("_links").getAsJsonObject()
                         .get("reservationList")
@@ -185,8 +195,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getReservation(String authorization) {
 
-        Call<JsonObject> reservationCall = apiCall.getReservation(
-                guest.getId().toString(),
+        Call<JsonObject> reservationCall = ImportantObjects.apiCall.getReservation(
+                ImportantObjects.guest.getId().toString(),
                 authorization);
 
 
@@ -199,8 +209,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 JsonArray reservations = responseObject.getAsJsonArray("reservation");
 
-                Reservation r = new Reservation();
-
                 LocalDate dateNow = LocalDate.now();
 
                 for (int i = 0; i < reservations.size(); i++) {
@@ -208,6 +216,12 @@ public class LoginActivity extends AppCompatActivity {
                     JsonObject reservationObject = reservations
                             .get(i).getAsJsonObject();
 
+                    ImportantObjects.reservation.setId(getId("reservation", 12, reservationObject));
+
+                    getReservationOta(authorization, ImportantObjects.reservation);
+                    ImportantObjects.reservation.setOta(ImportantObjects.ota);
+                    getRoom(authorization, ImportantObjects.reservation);
+                    ImportantObjects.reservation.setRoom(ImportantObjects.room);
 
                     String checkout = reservationObject.get("checkout").
                             toString()
@@ -218,21 +232,21 @@ public class LoginActivity extends AppCompatActivity {
                     int day = Integer.parseInt(checkout.substring(6, 8));
                     LocalDate checkoutDate = LocalDate.of(year, month, day);
 
-                    int id = getId("reservation", 12, reservationObject);
-                    r.setId((id));
+
+                    System.out.println("THIS IS THE RESERVATION ID: " + getId("reservation", 12, reservationObject));
 
 
                     String originalBookingNumber = reservationObject
                             .get("originalBookingNumber").toString().replace("\"", "");
-                    r.setOriginalBookingNumber(originalBookingNumber);
+                    ImportantObjects.reservation.setOriginalBookingNumber(originalBookingNumber);
                     Integer numberOfGuests = Integer.parseInt(
                             reservationObject
                                     .get("numberOfGuests").toString().replace("\"", "")
                     );
-                    r.setNumberOfGuests(numberOfGuests);
+                    ImportantObjects.reservation.setNumberOfGuests(numberOfGuests);
                     String reservationStatus = reservationObject
                             .get("reservationStatus").toString().replace("\"", "");
-                    r.setReservationStatus(reservationStatus);
+                    ImportantObjects.reservation.setReservationStatus(reservationStatus);
 
                     String checkin = reservationObject.get("checkin").
                             toString()
@@ -242,20 +256,27 @@ public class LoginActivity extends AppCompatActivity {
                             checkin.substring(0, 4)),
                             Integer.parseInt(checkin.substring(4, 6)),
                             Integer.parseInt(checkin.substring(6, 8)));
-                    r.setCheckin(checkinDate);
-                    r.setCheckout(checkoutDate);
-                    guest.getReservationList().add(r);
+                    ImportantObjects.reservation.setCheckin(checkinDate);
+                    ImportantObjects.reservation.setCheckout(checkoutDate);
+
+                    getProperty(authorization, ImportantObjects.reservation);
+                    ImportantObjects.reservation.setProperty(ImportantObjects.property);
+
+                    System.out.println("THIS IS THE RESERVATION");
+                    System.out.println(ImportantObjects.reservation.toString());
+
+                    ImportantObjects.guest.getReservationList().add(ImportantObjects.reservation);
 
 
                 }
 
-                for (Reservation res : guest.getReservationList()) {
+                for (Reservation res : ImportantObjects.guest.getReservationList()) {
                     if (res.getCheckin().compareTo(dateNow) > 0) {
-                        guest.setNextReservation(res);
+                        ImportantObjects.guest.setNextReservation(res);
                         break;
                     }
                 }
-                System.out.println("the reservation call has worked");
+
 
             }
 
@@ -272,8 +293,10 @@ public class LoginActivity extends AppCompatActivity {
     private void getReservationOta(String authorization, Reservation r) {
 
 
-        Call<JsonObject> reservationOtaCall = apiCall.getReservationOta(
-                r.getId().toString(),
+
+
+        Call<JsonObject> reservationOtaCall = ImportantObjects.apiCall.getReservationOta(
+                r.getId(),
                 authorization);
 
         reservationOtaCall.enqueue(new Callback<JsonObject>() {
@@ -281,9 +304,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 JsonObject otaObject = response.body().getAsJsonObject();
-                r.getOta().setName(otaObject.get("name").toString().replace("\"", ""));
-                r.getOta().setWebsite(otaObject.get("website").toString().replace("\"", ""));
-                r.getOta().setId((getId("ota", 4, otaObject)));
+
+                ImportantObjects.ota.setName(otaObject.get("name").toString().replace("\"", ""));
+                ImportantObjects.ota.setWebsite(otaObject.get("website").toString().replace("\"", ""));
+                ImportantObjects.ota.setId((getId("ota", 4, otaObject)));
+                System.out.println("this is the OTA: "+ ImportantObjects.ota.toString());
+
 
 
             }
@@ -299,18 +325,106 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private int getId(String pathIndexOf, int startCount, JsonObject jsonObject) {
+    private void getRoom(String authorization, Reservation res){
+
+        String id = res.getId();
+        Call<JsonObject> reservationRoomCall = ImportantObjects.apiCall.getRoom(
+                id,
+                authorization);
+
+        reservationRoomCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject roomObject = response.body().getAsJsonObject();
+                ImportantObjects.room.setType(roomObject.get("type").toString().replace("\"", ""));
+                ImportantObjects.room.setRoomNumber(roomObject.get("roomNumber").toString().replace("\"", ""));
+                ImportantObjects.room.setFloor(roomObject.get("floor").toString().replace("\"", ""));
+                ImportantObjects.room.setNumberBeds(Integer.parseInt(roomObject.get("numberBeds").toString().replace("\"", "")));
+                ImportantObjects.room.setRfidTag(roomObject.get("rfidTag").toString().replace("\"", ""));
+
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+
+
+
+    }
+
+
+    private void getProperty(String authorization, Reservation res){
+
+        String id = res.getId();
+        Call<JsonObject> reservationPropertyCall = ImportantObjects.apiCall.getReservationProperty(
+                id,
+                authorization);
+
+        reservationPropertyCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject propertyObject = response.body().getAsJsonObject();
+
+                ImportantObjects.property.setId(getId("properties", 11, propertyObject));
+                ImportantObjects.property.setName(propertyObject.get("name").toString().replace("\"", ""));
+                ImportantObjects.property.setAddress(propertyObject.get("address").toString().replace("\"", ""));
+                System.out.println("THIS IS THE PROPERTY:");
+                System.out.println(ImportantObjects.property.toString());
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+    private void getBed(String authorization, Guest guest){
+        String id = ""+guest.getId();
+        Call<JsonObject> guestBedCall = ImportantObjects.apiCall.getGuestBed(
+                id,
+                authorization);
+
+        guestBedCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject bedObject = response.body().getAsJsonObject();
+
+                ImportantObjects.bed.setRoomNumber(bedObject.get("roomNumber").toString().replace("\"", ""));
+                ImportantObjects.bed.setNumber(Integer.parseInt(bedObject.get("number").toString().replace("\"", "")));
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+
+
+
+    private String getId(String paramIndexOf, int startCount, JsonObject jsonObject) {
 
 
         String idPath = jsonObject.get("_links").getAsJsonObject().get("self")
                 .getAsJsonObject().get("href").toString();
 
-        Integer position = idPath.indexOf(pathIndexOf);
+        Integer position = idPath.indexOf(paramIndexOf);
 
         int id = Integer.parseInt(idPath.substring((position + startCount), (idPath.length() - 1)));
 
 
-        return id;
+        return ""+id;
 
     }
 }

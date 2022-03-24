@@ -12,6 +12,7 @@ public class Guest {
     private String password;
     private List<Reservation> reservationList = new ArrayList<>();
     private Reservation nextReservation = new Reservation();
+    private Bed bed = new Bed();
 
     public Guest(Integer id, String email, String name, String password) {
         this.id = id;
@@ -71,6 +72,14 @@ public class Guest {
         this.nextReservation = nextReservation;
     }
 
+    public Bed getBed() {
+        return bed;
+    }
+
+    public void setBed(Bed bed) {
+        this.bed = bed;
+    }
+
     @Override
     public String toString() {
         return "Guest{" +
@@ -80,6 +89,7 @@ public class Guest {
                 ", password='" + password + '\'' +
                 ", reservationList=" + reservationList +
                 ", nextReservation=" + nextReservation.toString() +
+                ", bed="+bed.toString()+
                 '}';
     }
 }

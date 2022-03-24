@@ -7,39 +7,32 @@ import java.util.List;
 public class Reservation {
 
 
-    private Integer id;
-    private OTA ota = new OTA();
+    private String id;
+
     private String originalBookingNumber;
-    private Integer numberOfGuests;
+
+    private OTA ota;
+
     private String reservationStatus;
 
 
     private Property property;
 
 
-    private List<Room> roomList = new ArrayList<>();
+    private Room room = new Room();
 
-
-    private List<Guest> guestList = new ArrayList<>();
 
     private LocalDate checkin;
     private LocalDate checkout;
 
+    private int numberOfGuests;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public OTA getOta() {
-        return ota;
-    }
-
-    public void setOta(OTA ota) {
-        this.ota = ota;
     }
 
     public String getOriginalBookingNumber() {
@@ -74,21 +67,18 @@ public class Reservation {
         this.property = property;
     }
 
-    public List<Room> getRoomList() {
-        return roomList;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomList(List<Room> roomList) {
-        this.roomList = roomList;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public List<Guest> getGuestList() {
-        return guestList;
+    public void setNumberOfGuests(int numberOfGuests) {
+        this.numberOfGuests = numberOfGuests;
     }
 
-    public void setGuestList(List<Guest> guestList) {
-        this.guestList = guestList;
-    }
 
     public LocalDate getCheckin() {
         return checkin;
@@ -106,17 +96,22 @@ public class Reservation {
         this.checkout = checkout;
     }
 
+    public OTA getOta() {
+        return ota;
+    }
+
+    public void setOta(OTA ota) {
+        this.ota = ota;
+    }
+
     @Override
     public String toString() {
-        return "Reservation{" +
-
-                ", ota=" + ota.toString() +
+        return "Reservation{" + "Id=" + id +
                 ", originalBookingNumber='" + originalBookingNumber + '\'' +
                 ", numberOfGuests=" + numberOfGuests +
                 ", reservationStatus='" + reservationStatus + '\'' +
                 ", property=" + property +
-                ", roomList=" + roomList +
-                ", guestList=" + guestList +
+                ", room=" + room +
                 ", checkin=" + checkin +
                 ", checkout=" + checkout +
                 '}';

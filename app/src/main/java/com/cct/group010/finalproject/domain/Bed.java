@@ -10,7 +10,6 @@ public class Bed {
 
     private Integer number;
 
-    private Boolean isVacant;
 
     public Bed() {
     }
@@ -19,7 +18,7 @@ public class Bed {
         this.id = id;
         this.roomNumber = roomNumber;
         this.number = number;
-        this.isVacant = isVacant;
+
     }
 
     public Integer getId() {
@@ -46,11 +45,11 @@ public class Bed {
         this.number = number;
     }
 
-    public Boolean getVacant() {
-        return isVacant;
-    }
-
-    public void setVacant(Boolean vacant) {
-        isVacant = vacant;
+    @Override
+    public String toString() {
+        return "Bed{" +
+                "roomNumber='" + roomNumber + '\'' +
+                ", number=" + number +
+                '}';
     }
 }

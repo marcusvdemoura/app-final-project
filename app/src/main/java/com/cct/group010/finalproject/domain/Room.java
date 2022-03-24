@@ -71,4 +71,16 @@ public class Room {
     public void setRfidTag(String rfidTag) {
         this.rfidTag = rfidTag;
     }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+
+                "type='" + type + '\'' +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", floor='" + floor + '\'' +
+                ", numberBeds=" + numberBeds +
+                ", rfidTag='" + rfidTag + '\'' +
+                '}';
+    }
 }
