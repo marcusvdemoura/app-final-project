@@ -20,7 +20,7 @@
         android:layout_height="185dp"
         android:layout_marginTop="248dp"
         android:layout_weight="0.5"
-        android:background="@drawable/rectangle"
+        android:background="@drawable/background_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"

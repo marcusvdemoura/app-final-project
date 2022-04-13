@@ -7,59 +7,87 @@
     tools:context=".ui.LoginActivity">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="587dp"
-        android:layout_height="404dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/insertEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/login_triangle" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="119dp"
-        android:layout_height="134dp"
-        android:layout_marginBottom="96dp"
-        app:layout_constraintBottom_toTopOf="@+id/insertEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/h" />
-
     <EditText
         android:id="@+id/insertEmail"
-        android:layout_width="232dp"
-        android:layout_height="59dp"
+        android:layout_width="307dp"
+        android:layout_height="57dp"
         android:layout_marginBottom="32dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/insertPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/insertPassword"
-        android:layout_width="231dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="307dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="432dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/loginButton"
-        android:layout_width="138dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="56dp"
-        android:text="Button"
+        android:id="@+id/loginBtn"
+        android:layout_width="265dp"
+        android:layout_height="73dp"
+        android:background="@drawable/login_button_state"
+        android:text="Login"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="73dp"
+        tools:layout_editor_absoluteY="514dp" />
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="Forgot your password?"
+        tools:layout_editor_absoluteX="134dp"
+        tools:layout_editor_absoluteY="602dp" />
+
+    <TextView
+        android:id="@+id/clickHereHyperTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click Here"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_light"
+        android:textColorHighlight="@android:color/holo_red_dark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="175dp"
+        tools:layout_editor_absoluteY="631dp" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="415dp"
+        android:layout_height="333dp"
+        android:layout_marginBottom="398dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background_image" />
+
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="133dp"
+        android:layout_marginEnd="151dp"
+        android:layout_marginBottom="478dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/app_logo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
