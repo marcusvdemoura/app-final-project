@@ -18,11 +18,5 @@ public class ImportantObjects {
     protected static final Guest guest = new Guest();
 
 
-
-    protected static final Property property = new Property();
-    protected static final Bed bed = new Bed();
-    protected static final OTA ota = new OTA();
-    protected static final Room room = new Room();
-    protected static final Reservation reservation = new Reservation();
     protected static final APICall apiCall = RetroClass.getAPICall();
 }

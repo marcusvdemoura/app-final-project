@@ -2,7 +2,12 @@ package com.cct.group010.finalproject.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -15,6 +20,8 @@ public class MainMenu extends AppCompatActivity {
 
     private TextView reservationMoreInfo, reservationStatus,reservationDates;
 
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,15 +29,26 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
 
 
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+
+//        System.out.println("PRINTING GUEST");
+//        System.out.println("the guest:::"+mPreferences.getString("email",""));
+//        System.out.println(mPreferences.getString("name", ""));
+//        System.out.println(mPreferences.getInt("id",0));
+//
+//
+//        System.out.println("THIS IS THE RESERVATIONS: ");
+//        System.out.println(mPreferences.getString("reservationsData", ""));
+
+
         reservationMoreInfo = (TextView) findViewById(R.id.reservationMoreInfo);
 
         reservationStatus = (TextView) findViewById(R.id.reservationStatus);
+        reservationStatus.setText(mPreferences.getString("reservationStatus", "didn't work"));
         reservationDates = (TextView) findViewById(R.id.reservationDates);
-        reservationStatus.setText(ImportantObjects.guest.getNextReservation().getReservationStatus());
-
-        String date = ImportantObjects.guest.getNextReservation().getCheckin().toString() + " -\n "
-                + ImportantObjects.guest.getNextReservation().getCheckout().toString();
-        reservationDates.setText(date);
+        reservationDates.setText(mPreferences.getString("reservationCheckIn", "didn't work") + " - \n" +
+                mPreferences.getString("reservationCheckOut", "didn't work"));
 
 
 
@@ -38,12 +56,8 @@ public class MainMenu extends AppCompatActivity {
 
         reservationMoreInfo.setOnClickListener(view -> {
 
-            System.out.println(ImportantObjects.guest.toString());
 
-            System.out.println(ImportantObjects.guest.getReservationList().get(0).toString());
 
-            System.out.println("THIS IS THE DATA I WANT TO PARSE inside de clickable:");
-            System.out.println(ImportantObjects.guest.toString());
 
 
 
