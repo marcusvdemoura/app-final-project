@@ -8,17 +8,16 @@
                     android:centerColor="#99d3f9"
                     android:endColor="#cab8f6"
                     android:angle="-45"/>
-                <corners
-                    android:bottomLeftRadius="70dp"
-                    android:bottomRightRadius="70dp"/>
+
             </shape>
     </item>
     <item
-        android:top="500dp"
-        >
+        android:top="280dp">
         <shape android:shape="rectangle">
-            <corners android:radius="32dp"/>
-            <solid android:color="#fff"/>
+            <corners android:topLeftRadius="70dp"
+                     android:topRightRadius="70dp"/>
+            <solid android:color="#ffff"/>
         </shape>
     </item>
+
 </layer-list>
