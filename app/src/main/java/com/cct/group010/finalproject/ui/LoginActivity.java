@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         tokenManager = new TokenManager(getApplicationContext());
 
         // Assign values to each control on the layout
-        loginButton = findViewById(R.id.loginButton);
+        loginButton = findViewById(R.id.loginBtn);
         email = (EditText) findViewById(R.id.insertEmail);
         password = (EditText) findViewById(R.id.insertPassword);
 
