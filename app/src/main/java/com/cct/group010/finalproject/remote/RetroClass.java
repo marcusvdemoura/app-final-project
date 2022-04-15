@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetroClass {
 
-    private static final String BASE_URL="http://192.168.0.129:8080";
+    private static final String BASE_URL="https://finalproject-atgp21-010.herokuapp.com/";
 
     private static HttpLoggingInterceptor httpLoggingInterceptor =
             new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);

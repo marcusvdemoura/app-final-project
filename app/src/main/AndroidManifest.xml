@@ -13,9 +13,6 @@
         android:theme="@style/Theme.Finalproject"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.Test"
-            android:exported="false" />
-        <activity
             android:name=".ui.MainMenu"
             android:exported="false" />
         <activity
