@@ -5,8 +5,14 @@
       <map>
         <entry key="..\:/Sensipass/app-final-project/app/src/main/res/layout/activity_main_menu.xml" value="0.10989583333333333" />
         <entry key="..\:/Sensipass/app-final-project/app/src/main/res/layout/header.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/drawable/background_image.xml" value="0.112" />
+        <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/drawable/layout_bg.xml" value="0.1595" />
+        <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/drawable/login_button_state.xml" value="0.112" />
+        <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/drawable/main_menu_background_image.xml" value="0.112" />
         <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/layout/activity_login.xml" value="0.2" />
-        <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/layout/activity_reset_password.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/layout/activity_main_menu.xml" value="0.25" />
+        <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/layout/activity_reset_password.xml" value="0.264" />
         <entry key="..\:/Users/ggene/AndroidStudioProjects/app-final-project/app/src/main/res/layout/header.xml" value="0.14635416666666667" />
         <entry key="..\:/college/finalproject/android_studio/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2265" />
         <entry key="..\:/college/finalproject/android_studio/app/src/main/res/drawable/login_triangle.xml" value="0.2265" />
