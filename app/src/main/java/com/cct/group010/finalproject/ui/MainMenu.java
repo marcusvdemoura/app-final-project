@@ -42,13 +42,7 @@ public class MainMenu extends AppCompatActivity {
 //        System.out.println(mPreferences.getString("reservationsData", ""));
 
 
-        reservationMoreInfo = (TextView) findViewById(R.id.reservationMoreInfo);
 
-        reservationStatus = (TextView) findViewById(R.id.reservationStatus);
-        reservationStatus.setText(mPreferences.getString("reservationStatus", "didn't work"));
-        reservationDates = (TextView) findViewById(R.id.reservationDates);
-        reservationDates.setText(mPreferences.getString("reservationCheckIn", "didn't work") + " - \n" +
-                mPreferences.getString("reservationCheckOut", "didn't work"));
 
 
 

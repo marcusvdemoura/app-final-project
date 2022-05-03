@@ -28,17 +28,22 @@
         class="androidx.cardview.widget.CardView"
         android:layout_width="343dp"
         android:layout_height="152dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="477dp" />
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/middle_cointainer" />
 
     <view
         android:id="@+id/middle_cointainer"
         class="androidx.cardview.widget.CardView"
         android:layout_width="343dp"
         android:layout_height="98dp"
+        android:layout_marginTop="36dp"
         android:clipToOutline="true"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="359dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/upper_container" />
 
     <ImageView
         android:id="@+id/app_logo_main"
@@ -116,8 +121,11 @@
         class="androidx.cardview.widget.CardView"
         android:layout_width="343dp"
         android:layout_height="152dp"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="182dp" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_logo_main" />
 
     <Button
         android:id="@+id/searchBtn"
