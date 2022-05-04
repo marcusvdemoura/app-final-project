@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor mEditor;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +76,6 @@ public class LoginActivity extends AppCompatActivity {
                         JwtToken jwtToken = response.body();
                         String token = jwtToken.getToken().toString();
                         tokenManager.createSession(username, token);
-
 
 
                         getGuest(token, username);
@@ -169,25 +167,26 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
     }
 
 
-    private void getReservations(String token){
+    private void getReservations(String token) {
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
-        String id = mPreferences.getInt("id",0)+"";
+        String id = mPreferences.getInt("id", 0) + "";
 
         Call<JsonObject> reservationCall = ImportantObjects.apiCall.getReservation(
                 id,
-                "Bearer "+token);
+                "Bearer " + token);
 
         reservationCall.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                JsonObject responseObject = response.body().get("_embedded").getAsJsonObject();
+                JsonElement jsonElement = response.body().get("_embedded");
+                JsonObject responseObject = jsonElement.getAsJsonObject();
+//                JsonObject responseObject = response.body().get("_embedded").getAsJsonObject();
                 JsonArray reservations = responseObject.getAsJsonArray("reservation");
 
                 System.out.println("this is the response Obj for reservations::");
@@ -199,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 LocalDate dateNow = LocalDate.now();
 
-                for(JsonElement res: reservations){
+                for (JsonElement res : reservations) {
 
                     JsonObject reservationObject = res.getAsJsonObject();
 
@@ -213,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                             Integer.parseInt(checkin.substring(4, 6)),
                             Integer.parseInt(checkin.substring(6, 8)));
 
-                    if (checkinDate.compareTo(dateNow) > 0){
+                    if (checkinDate.compareTo(dateNow) > 0) {
                         String id = (getId("reservation", 12, reservationObject));
 
                         mEditor.putString("reservationId", id);
@@ -246,7 +245,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
 
-
             }
 
             @Override
@@ -259,18 +257,18 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private OTA getReservationOTA(String token, String id){
+    private OTA getReservationOTA(String token, String id) {
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
 
         Call<JsonObject> reservationOtaCall = ImportantObjects.apiCall.getReservationOta(
                 id,
-                "Bearer "+token);
+                "Bearer " + token);
 
         OTA ota = new OTA();
 
-        reservationOtaCall.enqueue(new Callback<JsonObject>(){
+        reservationOtaCall.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 JsonObject otaObject = response.body().getAsJsonObject();
@@ -282,8 +280,6 @@ public class LoginActivity extends AppCompatActivity {
                 mEditor.putString("otaName", otaObject.get("name").toString().replace("\"", ""));
                 mEditor.putString("otaWebsite", otaObject.get("website").toString().replace("\"", ""));
                 mEditor.commit();
-
-
 
 
             }
@@ -300,7 +296,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void getRoom(String token, String resId){
+    private void getRoom(String token, String resId) {
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
@@ -308,7 +304,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Call<JsonObject> reservationRoomCall = ImportantObjects.apiCall.getRoom(
                 resId,
-                "Bearer "+token);
+                "Bearer " + token);
 
         Room r = new Room();
 
@@ -337,19 +333,16 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
-    private void getProperty(String token, String resId){
+    private void getProperty(String token, String resId) {
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
 
         Call<JsonObject> reservationPropertyCall = ImportantObjects.apiCall.getReservationProperty(
                 resId,
-                "Bearer "+token);
+                "Bearer " + token);
 
 //        Property p = new Property();
 
@@ -376,13 +369,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void getBed(String token){
+    private void getBed(String token) {
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
-        String id = mPreferences.getInt("id",1)+"";
+        String id = mPreferences.getInt("id", 1) + "";
         Call<JsonObject> guestBedCall = ImportantObjects.apiCall.getGuestBed(
                 id,
-                "Bearer "+token);
+                "Bearer " + token);
 
         guestBedCall.enqueue(new Callback<JsonObject>() {
             @Override
@@ -417,10 +410,6 @@ public class LoginActivity extends AppCompatActivity {
         return "" + id;
 
     }
-
-
-
-
 
 
 }
