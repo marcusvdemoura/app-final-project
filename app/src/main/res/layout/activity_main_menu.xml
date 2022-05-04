@@ -58,19 +58,6 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/app_logo" />
 
-    <view
-        android:id="@+id/footer_background"
-        class="com.google.android.material.bottomappbar.BottomAppBar"
-        android:layout_width="414dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="677dp"
-        android:layout_marginBottom="1dp"
-        android:background="@android:color/darker_gray"
-        android:backgroundTint="@color/material_dynamic_neutral_variant95"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/profile_icon"
@@ -97,7 +84,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.994"
-        app:layout_constraintStart_toStartOf="@+id/footer_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/home_page_icon" />
@@ -158,9 +144,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" /><![CDATA[
-
-    />
-
-]]>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

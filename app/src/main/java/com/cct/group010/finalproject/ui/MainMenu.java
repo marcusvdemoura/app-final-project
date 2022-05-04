@@ -47,17 +47,17 @@ public class MainMenu extends AppCompatActivity {
 
 
 
-
-        reservationMoreInfo.setOnClickListener(view -> {
-
-
-
-
-
-
-
-
-        });
+//
+//        reservationMoreInfo.setOnClickListener(view -> {
+//
+//
+//
+//
+//
+//
+//
+//
+//        });
 
 
 
