@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.MainMenu"
-            android:exported="false" />
+            android:exported="true" /> <!--        android:exported = true is needed for AID registration-->
         <activity
             android:name=".ui.LoginActivity"
             android:exported="false" />
@@ -25,10 +26,12 @@
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
-
+                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE"/>
                 <data android:mimeType="text/plain"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.nfc.cardemulation.host_apdu_service"
+                android:resource="@xml/apduservice"/>
         </activity>
     </application>
 

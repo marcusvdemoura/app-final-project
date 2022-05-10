@@ -12,6 +12,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.IsoDep;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -26,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cct.group010.finalproject.R;
+import com.cct.group010.finalproject.apduhost.IsoDepAdapter;
+import com.cct.group010.finalproject.apduhost.IsoDepTransceiver;
 import com.cct.group010.finalproject.domain.CustomGuestRequestToken;
 import com.cct.group010.finalproject.domain.Guest;
 import com.cct.group010.finalproject.domain.OTA;
@@ -49,7 +52,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements IsoDepTransceiver.OnMessageReceived, NfcAdapter.ReaderCallback {
 
     private EditText email, password;
     private Button loginButton;
@@ -60,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String ERROR_PROCESSING = "Error during wirting";
     public static final String SUCCESS = "Text Written Successfully";
     NfcAdapter nfcAdapter;
+    IsoDepAdapter isoDepAdapter;
     PendingIntent pendingIntent;
     IntentFilter writeTagFilters[];
     boolean writeMode;
@@ -68,13 +72,17 @@ public class LoginActivity extends AppCompatActivity {
     TextView textView;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
         setContentView(R.layout.activity_login);
-
+        //emulator properties
+//        listView = (ListView)findViewById(R.id.listView);
+        isoDepAdapter = new IsoDepAdapter(getLayoutInflater());
+//        listView.setAdapter(isoDepAdapter);
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        //emulator properties end
         tokenManager = new TokenManager(getApplicationContext());
 
         // Assign values to each control on the layout
@@ -112,18 +120,18 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
 
-                    writeModeOn();
-                    try {
-                        if (myTag == null) {
-                            Toast.makeText(context, ERROR, Toast.LENGTH_LONG).show();
-                        } else {
-                            write("PlainText|" + "TAG WILL BE HERE", myTag);
-                            Toast.makeText(context, SUCCESS, Toast.LENGTH_SHORT).show();
-                        }
-
-                    } catch (Exception e) {
-                        Toast.makeText(context, ERROR_PROCESSING, Toast.LENGTH_LONG).show();
-                    }
+//                    writeModeOn();
+//                    try {
+//                        if (myTag == null) {
+//                            Toast.makeText(context, ERROR, Toast.LENGTH_LONG).show();
+//                        } else {
+//                            write("PlainText|" + "TAG WILL BE HERE", myTag);
+//                            Toast.makeText(context, SUCCESS, Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                    } catch (Exception e) {
+//                        Toast.makeText(context, ERROR_PROCESSING, Toast.LENGTH_LONG).show();
+//                    }
 
 
                 }
@@ -133,7 +141,45 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         });
-//************************************ Start *******************************************************
+    }
+
+    //************************************ Start *******************************************************
+    @Override
+    public void onResume() {
+        super.onResume();
+        nfcAdapter.enableReaderMode(this, this, NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
+                null);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        nfcAdapter.disableReaderMode(this);
+    }
+
+    @Override
+    public void onTagDiscovered(Tag tag) {
+        IsoDep isoDep = IsoDep.get(tag);
+        IsoDepTransceiver transceiver = new IsoDepTransceiver(isoDep, this);
+        Thread thread = new Thread(transceiver);
+        thread.start();
+    }
+
+    @Override //need to verify if this method will be needed
+    public void onMessage(final byte[] message) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                isoDepAdapter.addMessage(new String(message));
+            }
+        });
+    }
+
+    @Override
+    public void onError(Exception exception) {
+        onMessage(exception.getMessage().getBytes());
+    }
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -152,18 +198,18 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //
 //        });
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            Toast.makeText(this, "This device does not support this shit", Toast.LENGTH_LONG).show();
-            finish();
-        }
-       // readFromIntent(getIntent());
-        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
-        writeTagFilters = new IntentFilter[] {tagDetected};
+//        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+//        if (nfcAdapter == null) {
+//            Toast.makeText(this, "This device does not support this shit", Toast.LENGTH_LONG).show();
+//            finish();
+//        }
+    // readFromIntent(getIntent());
+//        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
+//        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+//        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
+//        writeTagFilters = new IntentFilter[] {tagDetected};
+//      } on create end
 
-        }
 
 //    private void readFromIntent(Intent intent) {
 //        String action = intent.getAction();
@@ -198,38 +244,38 @@ public class LoginActivity extends AppCompatActivity {
 //        textView.setText("NFC Content: " + text);
 //    }
 
-    private void write(String text, Tag tag) throws IOException, FormatException {
-        NdefRecord[] records = {createRecord(text)};
-        NdefMessage message = new NdefMessage(records);
-        //get an instance of ndef for the tag
-        Ndef ndef = Ndef.get(tag);
-        //enable i/o
-        ndef.connect();
-        //write the message
-        ndef.writeNdefMessage(message);
-        //close connection
-        ndef.close();
-    }
+//    private void write(String text, Tag tag) throws IOException, FormatException {
+//        NdefRecord[] records = {createRecord(text)};
+//        NdefMessage message = new NdefMessage(records);
+//        //get an instance of ndef for the tag
+//        Ndef ndef = Ndef.get(tag);
+//        //enable i/o
+//        ndef.connect();
+//        //write the message
+//        ndef.writeNdefMessage(message);
+//        //close connection
+//        ndef.close();
+//    }
 
-    private NdefRecord createRecord(String text) throws UnsupportedEncodingException {
-        String lang = "en";
-        byte[] textBytes = text.getBytes();
-        byte[] langBytes = lang.getBytes("US-ASCII");
-        int langLength = langBytes.length;
-        int textLength = textBytes.length;
-        byte[] payload = new byte[1 + langLength + textLength];
-
-        //set status byte see ndef spec for actual bits
-        payload[0] = (byte) langLength;
-
-        //copy langbytes and lengbytes into payload
-        System.arraycopy(langBytes, 0, payload, 1, langLength);
-        System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
-
-        NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload);
-
-        return recordNFC;
-    }
+//    private NdefRecord createRecord(String text) throws UnsupportedEncodingException {
+//        String lang = "en";
+//        byte[] textBytes = text.getBytes();
+//        byte[] langBytes = lang.getBytes("US-ASCII");
+//        int langLength = langBytes.length;
+//        int textLength = textBytes.length;
+//        byte[] payload = new byte[1 + langLength + textLength];
+//
+//        //set status byte see ndef spec for actual bits
+//        payload[0] = (byte) langLength;
+//
+//        //copy langbytes and lengbytes into payload
+//        System.arraycopy(langBytes, 0, payload, 1, langLength);
+//        System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
+//
+//        NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload);
+//
+//        return recordNFC;
+//    }
 
 //    @Override
 //    protected void onNewIntent(Intent intent) {
@@ -241,12 +287,12 @@ public class LoginActivity extends AppCompatActivity {
 //        }
 //    }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        writeModeOff();
-    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        writeModeOff();
+//    }
 
 //    @Override
 //    public void onResume() {
@@ -254,16 +300,17 @@ public class LoginActivity extends AppCompatActivity {
 //        writeModeOn();
 //    }
 
-    private void writeModeOn() {
-        writeMode = true;
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, writeTagFilters, null);
-    }
+//    private void writeModeOn() {
+//        writeMode = true;
+//        nfcAdapter.enableForegroundDispatch(this, pendingIntent, writeTagFilters, null);
+//    }
+//
+//    private void writeModeOff() {
+//        writeMode = false;
+//        nfcAdapter.disableForegroundDispatch(this);
+//    }
 
-    private void writeModeOff() {
-        writeMode = false;
-        nfcAdapter.disableForegroundDispatch(this);
-    }
-//************************************ END *******************************************************
+    //************************************ END *******************************************************
     private void intentMenuActivity() {
 
         Intent i = new Intent(getApplicationContext(), MainMenu.class);
