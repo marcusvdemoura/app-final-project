@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 
+
 import com.cct.group010.finalproject.ui.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
