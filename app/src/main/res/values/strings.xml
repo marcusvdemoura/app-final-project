@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">finalproject</string>
+    <string name="servicedesc">NFC Application</string>
+    <string name="aiddescription">Using key to open the door</string>
 </resources>
