@@ -24,26 +24,18 @@
         app:srcCompat="@drawable/main_menu_background_image" />
 
     <view
-        android:id="@+id/lower_container"
-        class="androidx.cardview.widget.CardView"
-        android:layout_width="343dp"
-        android:layout_height="152dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/middle_cointainer" />
-
-    <view
         android:id="@+id/middle_cointainer"
         class="androidx.cardview.widget.CardView"
         android:layout_width="343dp"
         android:layout_height="98dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="344dp"
+        android:layout_marginEnd="38dp"
         android:clipToOutline="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upper_container" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/app_logo_main"
@@ -102,30 +94,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/settings_icon" />
 
-    <view
-        android:id="@+id/upper_container"
-        class="androidx.cardview.widget.CardView"
-        android:layout_width="343dp"
-        android:layout_height="152dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.441"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_logo_main" />
-
-    <Button
-        android:id="@+id/searchBtn"
-        android:layout_width="167dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/login_button_state"
-        android:text="Search"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/upper_container"
-        app:layout_constraintEnd_toEndOf="@+id/upper_container"
-        app:layout_constraintHorizontal_bias="0.477"
-        app:layout_constraintStart_toStartOf="@+id/upper_container" />
-
     <EditText
         android:id="@+id/upcoming_trip"
         android:layout_width="335dp"
@@ -145,4 +113,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="337dp"
+        android:layout_height="153dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="479dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="99dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <view
+        android:id="@+id/view"
+        class="androidx.appcompat.widget.ActionMenuView"
+        android:layout_width="128dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="231dp"
+        android:layout_marginEnd="151dp"
+        android:layout_marginBottom="450dp"
+        android:background="@android:color/white"
+        android:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/nfc_switch"
+        android:layout_width="116dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginTop="232dp"
+        android:layout_marginEnd="153dp"
+        android:layout_marginBottom="452dp"
+        android:text="NFC"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
