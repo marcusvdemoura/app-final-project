@@ -76,18 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                         JwtToken jwtToken = response.body();
                         String token = jwtToken.getToken().toString();
                         tokenManager.createSession(username, token);
-
-
                         getGuest(token, username);
-
                         getBed(token);
-
                         getReservations(token);
-
                         intentMenuActivity();
-
                     }
-
                 }
 
                 @Override
@@ -137,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (username.contentEquals(email)) {
 
-
                         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         mEditor = mPreferences.edit();
 
@@ -156,8 +148,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     System.out.println("THE GUEST CALL HAS WORKED");
                 }
-
-
             }
 
             @Override
@@ -171,7 +161,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void getReservations(String token) {
-
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
         String id = mPreferences.getInt("id", 0) + "";
@@ -239,12 +228,8 @@ public class LoginActivity extends AppCompatActivity {
                         getRoom(token, id);
 
                         break;
-
                     }
-
                 }
-
-
             }
 
             @Override
@@ -280,8 +265,6 @@ public class LoginActivity extends AppCompatActivity {
                 mEditor.putString("otaName", otaObject.get("name").toString().replace("\"", ""));
                 mEditor.putString("otaWebsite", otaObject.get("website").toString().replace("\"", ""));
                 mEditor.commit();
-
-
             }
 
             @Override
@@ -331,8 +314,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void getProperty(String token, String resId) {
@@ -355,14 +336,12 @@ public class LoginActivity extends AppCompatActivity {
                 mEditor.putString("propertyName", propertyObject.get("name").toString().replace("\"", ""));
                 mEditor.putString("propertyAddress", propertyObject.get("address").toString().replace("\"", ""));
                 mEditor.commit();
-
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
 
                 System.out.println("::: GET PROPERTY DIDN'T WORK :::");
-
             }
         });
 //        return p;
@@ -398,14 +377,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private String getId(String paramIndexOf, int startCount, JsonObject jsonObject) {
 
-
         String idPath = jsonObject.get("_links").getAsJsonObject().get("self")
                 .getAsJsonObject().get("href").toString();
 
         Integer position = idPath.indexOf(paramIndexOf);
 
         int id = Integer.parseInt(idPath.substring((position + startCount), (idPath.length() - 1)));
-
 
         return "" + id;
 
